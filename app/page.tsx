@@ -198,82 +198,110 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b border-border bg-card">
-        <div className="flex items-center justify-between px-8 py-6">
-          <div className="flex items-center gap-4">
-            <Image
-              src="/logo.png"
-              alt="ZIAD EL-BADAWI Logo"
-              width={60}
-              height={60}
-              priority
-            />
+      {/* Header */}
+      <header className="sticky top-0 z-40 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="mx-auto flex items-center justify-between px-6 py-4 sm:px-8">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
+              <Image
+                src="/logo.png"
+                alt="ZIAD EL-BADAWI Logo"
+                width={40}
+                height={40}
+                priority
+                className="object-contain"
+              />
+            </div>
             <div>
-              <h1 className="text-2xl font-bold text-foreground">ZIAD EL-BADAWI</h1>
+              <h1 className="text-lg font-bold tracking-tight text-foreground">ZIAD EL-BADAWI</h1>
+              <p className="text-xs text-muted-foreground">Video Samples Dashboard</p>
             </div>
           </div>
         </div>
       </header>
 
-      <div className="px-8 py-8">
-        <div className="mb-8">
-          <h2 className="text-3xl font-bold text-foreground">Video Samples Data</h2>
-          <p className="mt-2 text-muted-foreground">Click on any cropped video to open full player</p>
+      {/* Main Content */}
+      <div className="mx-auto max-w-full px-6 py-12 sm:px-8">
+        {/* Section Header */}
+        <div className="mb-10 space-y-2">
+          <h2 className="text-4xl font-bold tracking-tight text-foreground">Video Samples Data</h2>
+          <p className="text-base text-muted-foreground max-w-2xl">
+            Comprehensive collection of language learning video samples with metadata and interactive playback. Click any video thumbnail to view the full content.
+          </p>
         </div>
 
-        <div className="overflow-x-auto rounded-lg border border-border bg-card shadow-sm">
-          <table className="w-full border-collapse">
-            <thead>
-              <tr className="border-b border-border bg-primary text-primary-foreground">
-                <th className="px-6 py-3 text-left font-semibold">Case ID</th>
-                <th className="px-6 py-3 text-left font-semibold">Platform</th>
-                <th className="px-6 py-3 text-left font-semibold">Video Title</th>
-                <th className="px-6 py-3 text-left font-semibold">Channel</th>
-                <th className="px-6 py-3 text-left font-semibold">Start (s)</th>
-                <th className="px-6 py-3 text-left font-semibold">End (s)</th>
-                <th className="px-6 py-3 text-left font-semibold">Duration (s)</th>
-                <th className="px-6 py-3 text-left font-semibold">Detected Lang</th>
-                <th className="px-6 py-3 text-left font-semibold">Primary Lang</th>
-                <th className="px-6 py-3 text-left font-semibold">Multilingual</th>
-                <th className="px-6 py-3 text-left font-semibold">Language Tags</th>
-                <th className="px-6 py-3 text-left font-semibold">Audio Type</th>
-                <th className="px-6 py-3 text-left font-semibold">Visual Type</th>
-                <th className="px-6 py-3 text-left font-semibold">Voice Over</th>
-                <th className="px-6 py-3 text-left font-semibold">Transcript</th>
-                <th className="px-6 py-3 text-left font-semibold">Cropped Video</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.map((row, index) => (
-                <tr key={index} className="border-b border-border transition-colors hover:bg-muted/50">
-                  <td className="px-6 py-4 text-foreground text-sm font-medium">{row.case_id}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.source_platform}</td>
-                  <td className="max-w-xs px-6 py-4 text-foreground text-sm">{row.video_title}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.channel}</td>
-                  <td className="px-6 py-4 text-foreground text-sm text-center">{row.start_sec}</td>
-                  <td className="px-6 py-4 text-foreground text-sm text-center">{row.end_sec}</td>
-                  <td className="px-6 py-4 text-foreground text-sm text-center">{row.duration_sec}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.detected_language}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.primary_language}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.multilingual}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.language_tags}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.audio_type}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.visual_type}</td>
-                  <td className="px-6 py-4 text-foreground text-sm">{row.voice_over}</td>
-                  <td className="max-w-sm px-6 py-4 text-foreground text-xs">{row.transcript}</td>
-                  <td className="px-6 py-4 text-foreground">
-                    <VideoPlayer
-                      videoUrl={row.video_url}
-                      startTime={row.start_sec}
-                      endTime={row.end_sec}
-                      caseId={row.case_id}
-                      onOpen={() => setSelectedVideo(row.video_url)}
-                    />
-                  </td>
+        {/* Table Container */}
+        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-lg">
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-border bg-secondary/40">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Case ID</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Platform</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Video Title</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Channel</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-foreground">Start (s)</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-foreground">End (s)</th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold text-foreground">Duration (s)</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Languages</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Audio</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Transcript</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Preview</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody className="divide-y divide-border/50">
+                {data.map((row, index) => (
+                  <tr
+                    key={index}
+                    className="transition-all duration-200 hover:bg-secondary/40"
+                  >
+                    <td className="px-6 py-4 text-sm font-medium text-accent">{row.case_id}</td>
+                    <td className="px-6 py-4 text-sm text-foreground">{row.source_platform}</td>
+                    <td className="max-w-xs px-6 py-4 text-sm text-foreground truncate" title={row.video_title}>
+                      {row.video_title}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-foreground">{row.channel}</td>
+                    <td className="px-6 py-4 text-center text-sm text-muted-foreground">{row.start_sec}</td>
+                    <td className="px-6 py-4 text-center text-sm text-muted-foreground">{row.end_sec}</td>
+                    <td className="px-6 py-4 text-center text-sm font-medium text-foreground">{row.duration_sec}s</td>
+                    <td className="px-6 py-4 text-sm text-foreground">
+                      <span className="inline-flex items-center gap-2">
+                        <span className="flex gap-1">
+                          {row.primary_language === 'English' && (
+                            <span className="inline-block h-2 w-2 rounded-full bg-accent/70"></span>
+                          )}
+                          {row.primary_language === 'Spanish' && (
+                            <span className="inline-block h-2 w-2 rounded-full bg-accent/70"></span>
+                          )}
+                        </span>
+                        {row.language_tags}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-foreground">{row.audio_type}</td>
+                    <td className="max-w-xs px-6 py-4 text-xs text-muted-foreground truncate" title={row.transcript}>
+                      {row.transcript}
+                    </td>
+                    <td className="px-6 py-4">
+                      <VideoPlayer
+                        videoUrl={row.video_url}
+                        startTime={row.start_sec}
+                        endTime={row.end_sec}
+                        caseId={row.case_id}
+                        onOpen={() => setSelectedVideo(row.video_url)}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Footer Info */}
+        <div className="mt-8 rounded-lg border border-border/50 bg-secondary/20 px-6 py-4">
+          <p className="text-sm text-muted-foreground">
+            {data.length} video samples • Last updated March 2026 • All videos optimized for language learning
+          </p>
         </div>
       </div>
 
