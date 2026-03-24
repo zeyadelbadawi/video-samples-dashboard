@@ -225,9 +225,7 @@ export default function Page() {
         {/* Section Header */}
         <div className="mb-10 space-y-2">
           <h2 className="text-4xl font-bold tracking-tight text-foreground">Video Samples Data</h2>
-          <p className="text-base text-muted-foreground max-w-2xl">
-            Comprehensive collection of language learning video samples with metadata and interactive playback. Click any video thumbnail to view the full content.
-          </p>
+
         </div>
 
         {/* Table Container */}
