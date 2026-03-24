@@ -7,12 +7,10 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'ZIAD EL-BADAWI | Language Learning Platform',
-  description: 'Learn English and Spanish with real native speakers. Your vision, our code.',
-  generator: 'v0.app',
+  title: 'ZIAD EL-BADAWI | Samples',
   openGraph: {
-    title: 'ZIAD EL-BADAWI | Language Learning Platform',
-    description: 'Learn English and Spanish with real native speakers. Your vision, our code.',
+    title: 'ZIAD EL-BADAWI | Samples',
+
   },
   icons: {
     icon: [
