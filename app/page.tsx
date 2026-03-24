@@ -7,6 +7,8 @@ const data = [
   {
     case_id: 'british_01',
     source_platform: 'YouTube',
+    URL: 'https://www.youtube.com/watch?v=QCvJMTSzGPo',
+
     source_url: 'https://www.youtube.com/watch?v=QCvJMTSzGPo',
     video_title: 'Real British English Conversations in a Small Town (with Subtitles)',
     channel: 'My English Coach Dave',
@@ -26,6 +28,8 @@ const data = [
   {
     case_id: 'british_02',
     source_platform: 'YouTube',
+    URL: 'https://www.youtube.com/watch?v=5Rde32zipGk',
+
     source_url: 'https://www.youtube.com/watch?v=5Rde32zipGk',
     video_title: 'British Accent Shadowing | Pride and Prejudice | Learn RP Pronunciation Part 1',
     channel: 'Ashley Howard',
@@ -45,6 +49,8 @@ const data = [
   {
     case_id: 'spanish_01',
     source_platform: 'YouTube',
+    URL: 'https://www.youtube.com/watch?v=vRMAc1UgW-w',
+
     source_url: 'https://www.youtube.com/watch?v=vRMAc1UgW-w',
     video_title: 'Interview in Spanish - Meet Paul | Spanish Listening Activity',
     channel: 'Why Not Spanish?',
@@ -64,6 +70,8 @@ const data = [
   {
     case_id: 'spanish_02',
     source_platform: 'YouTube',
+    URL: 'https://www.youtube.com/watch?v=vRMAc1UgW-w',
+
     source_url: 'https://www.youtube.com/watch?v=GGqcpDSUJlE',
     video_title: 'Gipsy Kings - Bamboléo (Official Lyric Video)',
     channel: 'Gipsy Kings',
@@ -83,6 +91,8 @@ const data = [
   {
     case_id: 'american_01',
     source_platform: 'YouTube',
+    URL: 'https://www.youtube.com/watch?v=HAnw168huqA',
+
     source_url: 'https://www.youtube.com/watch?v=HAnw168huqA',
     video_title: 'Think Fast, Talk Smart: Communication Techniques',
     channel: 'Stanford Graduate School of Business',
@@ -102,6 +112,7 @@ const data = [
   {
     case_id: 'american_02',
     source_platform: 'YouTube',
+    URL: 'https://www.youtube.com/watch?v=5oTmkLZcFxE',
     source_url: 'https://www.youtube.com/watch?v=5oTmkLZcFxE',
     video_title: 'Very Simple Spanish Story for Beginners (A1–A2) – My Perfect Day',
     channel: 'ListenES',
