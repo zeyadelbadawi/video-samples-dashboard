@@ -237,6 +237,7 @@ export default function Page() {
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Case ID</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Platform</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Video Title</th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Video URL</th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-foreground">Channel</th>
                   <th className="px-6 py-4 text-center text-sm font-semibold text-foreground">Start (s)</th>
                   <th className="px-6 py-4 text-center text-sm font-semibold text-foreground">End (s)</th>
