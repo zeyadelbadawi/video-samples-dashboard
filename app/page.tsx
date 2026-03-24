@@ -210,7 +210,6 @@ export default function Page() {
             />
             <div>
               <h1 className="text-2xl font-bold text-foreground">ZIAD EL-BADAWI</h1>
-              <p className="text-sm text-muted-foreground">Your Vision, Our Code</p>
             </div>
           </div>
         </div>
