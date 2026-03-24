@@ -270,6 +270,12 @@ export default function Page() {
                     <td className="max-w-xs px-6 py-4 text-sm text-foreground truncate" title={row.video_title}>
                       {row.video_title}
                     </td>
+                    <td className="px-6 py-4 text-sm text-blue-500 underline">
+                      <a href={row.source_url} target="_blank" rel="noopener noreferrer">
+                        Open Source
+                      </a>
+                    </td>
+
                     <td className="px-6 py-4 text-sm text-foreground">{row.channel}</td>
                     <td className="px-6 py-4 text-center text-sm text-muted-foreground">{row.start_sec}</td>
                     <td className="px-6 py-4 text-center text-sm text-muted-foreground">{row.end_sec}</td>
