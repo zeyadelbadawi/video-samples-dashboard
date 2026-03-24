@@ -97,7 +97,7 @@ const data = [
     visual_type: 'Single-shot',
     voice_over: 'No',
     transcript: 'I do this because this is a perfect analogy for what we\'re going to be talking about today.',
-    video_url: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/american_01-fUlW63t1HUUOiAoptRZ9V7TOuVuexV.mp4',
+    video_url: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/american_01-fUlW63t1HUUOiAdoptRZ9V7TOuVuexV.mp4',
   },
   {
     case_id: 'american_02',
