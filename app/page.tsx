@@ -1,5 +1,8 @@
 'use client'
 
+import { useState } from 'react'
+import Image from 'next/image'
+
 const data = [
   {
     case_id: 'british_01',
@@ -122,22 +125,31 @@ interface VideoPlayerProps {
   startTime: number
   endTime: number
   caseId: string
+  onOpen: () => void
 }
 
-function VideoPlayer({ videoUrl, startTime, endTime, caseId }: VideoPlayerProps) {
+function VideoPlayer({ videoUrl, startTime, endTime, caseId, onOpen }: VideoPlayerProps) {
   return (
     <div className="flex flex-col gap-2">
-      <video
-        key={caseId}
-        width={200}
-        height={112}
-        controls
-        className="rounded bg-muted"
-        controlsList="nodownload"
+      <button
+        onClick={onOpen}
+        className="relative h-28 w-40 cursor-pointer overflow-hidden rounded-lg bg-muted transition-transform duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-accent"
       >
-        <source src={videoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+        <video
+          key={caseId}
+          width={160}
+          height={112}
+          className="h-full w-full object-cover"
+          crossOrigin="anonymous"
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 flex items-center justify-center bg-black/30 transition-colors duration-200 hover:bg-black/40">
+          <svg className="h-12 w-12 text-white" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M5 3v14l11-7z" />
+          </svg>
+        </div>
+      </button>
       <div className="text-xs text-muted-foreground">
         {startTime}s - {endTime}s
       </div>
@@ -145,63 +157,132 @@ function VideoPlayer({ videoUrl, startTime, endTime, caseId }: VideoPlayerProps)
   )
 }
 
-export default function Page() {
+interface VideoModalProps {
+  isOpen: boolean
+  videoUrl: string
+  onClose: () => void
+}
+
+function VideoModal({ isOpen, videoUrl, onClose }: VideoModalProps) {
+  if (!isOpen) return null
+
   return (
-    <main className="min-h-screen bg-background p-8">
-      <div className="mx-auto max-w-full overflow-x-auto">
-        <h1 className="mb-6 text-3xl font-bold text-foreground">Video Samples Data</h1>
-        <table className="w-full border-collapse border border-border">
-          <thead>
-            <tr className="sticky top-0 bg-primary text-primary-foreground">
-              <th className="border border-border px-4 py-2 text-left font-semibold">Case ID</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Platform</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Video Title</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Channel</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Start (s)</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">End (s)</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Duration (s)</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Detected Lang</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Primary Lang</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Multilingual</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Language Tags</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Audio Type</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Visual Type</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Voice Over</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Transcript</th>
-              <th className="border border-border px-4 py-2 text-left font-semibold">Cropped Video</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((row, index) => (
-              <tr key={index} className="hover:bg-muted/50">
-                <td className="border border-border px-4 py-2 text-foreground">{row.case_id}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.source_platform}</td>
-                <td className="border border-border px-4 py-2 text-foreground max-w-xs">{row.video_title}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.channel}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.start_sec}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.end_sec}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.duration_sec}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.detected_language}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.primary_language}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.multilingual}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.language_tags}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.audio_type}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.visual_type}</td>
-                <td className="border border-border px-4 py-2 text-foreground">{row.voice_over}</td>
-                <td className="border border-border px-4 py-2 text-foreground max-w-sm text-sm">{row.transcript}</td>
-                <td className="border border-border px-4 py-2 text-foreground">
-                  <VideoPlayer
-                    videoUrl={row.video_url}
-                    startTime={row.start_sec}
-                    endTime={row.end_sec}
-                    caseId={row.case_id}
-                  />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div className="relative h-auto w-full max-w-4xl rounded-lg bg-background shadow-lg" onClick={(e) => e.stopPropagation()}>
+        <button
+          onClick={onClose}
+          className="absolute -right-10 -top-10 rounded-full bg-background p-2 text-foreground hover:bg-muted md:relative md:-right-0 md:-top-0 md:m-4"
+        >
+          <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+        <div className="aspect-video w-full">
+          <video
+            autoPlay
+            controls
+            className="h-full w-full rounded-lg"
+            crossOrigin="anonymous"
+          >
+            <source src={videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
       </div>
+    </div>
+  )
+}
+
+export default function Page() {
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null)
+
+  return (
+    <main className="min-h-screen bg-background">
+      <header className="border-b border-border bg-card">
+        <div className="flex items-center justify-between px-8 py-6">
+          <div className="flex items-center gap-4">
+            <Image
+              src="/logo.png"
+              alt="ZIAD EL-BADAWI Logo"
+              width={60}
+              height={60}
+              priority
+            />
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">ZIAD EL-BADAWI</h1>
+              <p className="text-sm text-muted-foreground">Your Vision, Our Code</p>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="px-8 py-8">
+        <div className="mb-8">
+          <h2 className="text-3xl font-bold text-foreground">Video Samples Data</h2>
+          <p className="mt-2 text-muted-foreground">Click on any cropped video to open full player</p>
+        </div>
+
+        <div className="overflow-x-auto rounded-lg border border-border bg-card shadow-sm">
+          <table className="w-full border-collapse">
+            <thead>
+              <tr className="border-b border-border bg-primary text-primary-foreground">
+                <th className="px-6 py-3 text-left font-semibold">Case ID</th>
+                <th className="px-6 py-3 text-left font-semibold">Platform</th>
+                <th className="px-6 py-3 text-left font-semibold">Video Title</th>
+                <th className="px-6 py-3 text-left font-semibold">Channel</th>
+                <th className="px-6 py-3 text-left font-semibold">Start (s)</th>
+                <th className="px-6 py-3 text-left font-semibold">End (s)</th>
+                <th className="px-6 py-3 text-left font-semibold">Duration (s)</th>
+                <th className="px-6 py-3 text-left font-semibold">Detected Lang</th>
+                <th className="px-6 py-3 text-left font-semibold">Primary Lang</th>
+                <th className="px-6 py-3 text-left font-semibold">Multilingual</th>
+                <th className="px-6 py-3 text-left font-semibold">Language Tags</th>
+                <th className="px-6 py-3 text-left font-semibold">Audio Type</th>
+                <th className="px-6 py-3 text-left font-semibold">Visual Type</th>
+                <th className="px-6 py-3 text-left font-semibold">Voice Over</th>
+                <th className="px-6 py-3 text-left font-semibold">Transcript</th>
+                <th className="px-6 py-3 text-left font-semibold">Cropped Video</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data.map((row, index) => (
+                <tr key={index} className="border-b border-border transition-colors hover:bg-muted/50">
+                  <td className="px-6 py-4 text-foreground text-sm font-medium">{row.case_id}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.source_platform}</td>
+                  <td className="max-w-xs px-6 py-4 text-foreground text-sm">{row.video_title}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.channel}</td>
+                  <td className="px-6 py-4 text-foreground text-sm text-center">{row.start_sec}</td>
+                  <td className="px-6 py-4 text-foreground text-sm text-center">{row.end_sec}</td>
+                  <td className="px-6 py-4 text-foreground text-sm text-center">{row.duration_sec}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.detected_language}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.primary_language}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.multilingual}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.language_tags}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.audio_type}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.visual_type}</td>
+                  <td className="px-6 py-4 text-foreground text-sm">{row.voice_over}</td>
+                  <td className="max-w-sm px-6 py-4 text-foreground text-xs">{row.transcript}</td>
+                  <td className="px-6 py-4 text-foreground">
+                    <VideoPlayer
+                      videoUrl={row.video_url}
+                      startTime={row.start_sec}
+                      endTime={row.end_sec}
+                      caseId={row.case_id}
+                      onOpen={() => setSelectedVideo(row.video_url)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <VideoModal
+        isOpen={selectedVideo !== null}
+        videoUrl={selectedVideo || ''}
+        onClose={() => setSelectedVideo(null)}
+      />
     </main>
   )
 }
