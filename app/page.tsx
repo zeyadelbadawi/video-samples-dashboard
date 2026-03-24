@@ -316,7 +316,7 @@ export default function Page() {
         {/* Footer Info */}
         <div className="mt-8 rounded-lg border border-border/50 bg-secondary/20 px-6 py-4">
           <p className="text-sm text-muted-foreground">
-            {data.length} video samples • Last updated March 2026 • All videos optimized for language learning
+            {data.length} video samples • Last updated 24 March 2026 •
           </p>
         </div>
       </div>
