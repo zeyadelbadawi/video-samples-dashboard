@@ -1,56 +1,64 @@
-# Welcome to your Expo app 👋
+# دفتري (Daftari)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+تطبيق آيفون أوفلاين لمحاسب قانوني يتابع بيه: **ليه كام وعليه كام**، الدخل، مصاريف الشغل والمصاريف الشخصية، السلف، تحصيل وسداد الديون، الضرائب، وأرصدة البنوك والمحافظ (فودافون كاش، إنستاباي…)، مع تقارير أسبوعية وشهرية وسنوية تتشارك PDF.
 
-## Get started
+كل البيانات **على الموبايل بس** (SQLite). مفيش سيرفر ولا نت.
 
-1. Install dependencies
+## المميزات
 
-   ```bash
-   npm install
-   ```
+- **الأشخاص**: سيرش بالاسم (بيفهم أ/ا، ة/ه، ى/ي) أو التليفون، وكشف حساب لكل شخص بالرصيد بعد كل حركة.
+- **أنواع الحركات**: دخل، مصاريف شغل، مصاريف شخصية، ضرائب ورسوم، دين ليا، دين عليا، سلفة إديتها، سلفة خدتها، تحصيل، سداد، وتحويل بين حساباتي.
+- **البنوك والمحافظ والكاش**: رصيد افتتاحي (ينفع يبقى بالسالب، زي القروض والسحب على المكشوف) وكشف حساب.
+- **التقارير**: أسبوعي (من السبت للجمعة) وشهري وسنوي، فيها مقارنة بالفترة اللي قبلها، والتفاصيل حسب كل تصنيف، وحركة كل حساب، والمديونيات في آخر الفترة، وتصدير PDF.
+- **تذكيرات**: إشعار كل جمعة 9 بالليل لتقرير الأسبوع، وأول كل شهر الساعة 10 الصبح لتقرير الشهر اللي فات.
+- **الأمان**: رقم سري من 6 أرقام (متخزن hash في الـ Keychain) و Face ID، والأبلكيشن بيتقفل لوحده لما يروح الخلفية.
+- **النسخ الاحتياطي**:
+  1. ملف الداتابيس في `Documents/`، وده بيدخل في iCloud Backup بتاع الآيفون.
+  2. نسخة JSON أوتوماتيك كل يوم جوه الموبايل، وبيفضل آخر 14 نسخة.
+  3. تصدير يدوي لملف JSON تحفظه على iCloud Drive أو Files أو تبعته لنفسك، واسترجاعه.
+     ودي **الطبقة الوحيدة اللي بتحميك لو الموبايل ضاع**.
 
-2. Start the app
+## التقنيات
 
-   ```bash
-   npx expo start
-   ```
+Expo SDK 58 · React Native · TypeScript · Expo Router · expo-sqlite
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/
+  app/            الشاشات (Expo Router)
+  components/     UI, LockGate, TxRow, ContactSelect, DateField
+  db/             kinds.ts (تأثير كل نوع حركة)، schema.ts (migrations)، queries.ts، reports.ts
+  lib/            money (قروش integer)، dates، arabic search، backup، notifications، report PDF، auth
+tests/            tests للحسابات على SQLite حقيقي (node:sqlite)
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+الفلوس متخزنة **بالقروش كـ integer**، والأرصدة **مش متخزنة**: بتتحسب من الحركات، ومصدرها الوحيد `src/db/kinds.ts`.
 
-### Other setup steps
+## التطوير
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npm install
+```
 
-## Learn more
+```bash
+npm test
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+```bash
+npx tsc --noEmit
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo start
+```
 
-## Join the community
+## بناء الـ IPA وتنزيله على الآيفون (من غير Mac)
 
-Join our community of developers creating universal apps.
+1. أي push على البرانش `daftari-mobile-app` بيشغّل الـ workflow اللي اسمه **iOS unsigned IPA** على Mac في GitHub Actions (تقدر كمان تشغله يدوي من تاب Actions).
+2. لما يخلص، نزّل `Daftari-unsigned-ipa` من الـ Artifacts بتاعة الـ run.
+3. وقّع الملف ونزّله على الموبايل بأداة الـ sideloading والشهادة بتوعك.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+مهم:
+- **خلي الـ Bundle ID زي ما هو دايماً (`com.daftari.ledger`)**. لو اتغير، iOS هيعتبره أبلكيشن جديد والداتا القديمة مش هتبان.
+- **متمسحش الأبلكيشن** قبل ما تنزّل نسخة جديدة. نزّلها فوقه على طول، كده الداتا بتفضل موجودة.
+- قبل أي تحديث اعمل نسخة احتياطية من الإعدادات.
+- لو الشهادة اتلغت (revoked) الأبلكيشن مش هيفتح، بس الداتا بتفضل موجودة. وقّعه تاني بشهادة شغالة ونزّله فوقه.

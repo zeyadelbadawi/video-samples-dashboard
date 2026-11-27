@@ -1,0 +1,74 @@
+# Builds an UNSIGNED .ipa on a GitHub-hosted Mac (no local Mac needed).
+# Download it from the run's "Artifacts", then sign + install it on the iPhone with your
+# sideloading tool and certificate. Keep the bundle id (com.daftari.ledger) the same on every
+# install, otherwise iOS treats it as a different app and the existing data won't be visible.
+name: iOS unsigned IPA
+
+on:
+  push:
+    branches: [daftari-mobile-app]
+    paths-ignore: ['**.md']
+  workflow_dispatch:
+
+concurrency:
+  group: ios-ipa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Select newest Xcode
+        run: |
+          XCODE=$(ls -d /Applications/Xcode_*.app | grep -v -i beta | sort -V | tail -1)
+          echo "Using $XCODE"
+          sudo xcode-select -s "$XCODE"
+          xcodebuild -version
+
+      - run: npm ci
+
+      - name: Typecheck, lint, tests
+        run: |
+          npx tsc --noEmit
+          npx eslint src tests
+          npm test
+
+      - name: Generate native iOS project
+        run: npx expo prebuild --platform ios --clean
+
+      - name: Build (Release, no code signing)
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -workspace ios/Daftari.xcworkspace \
+            -scheme Daftari \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" \
+            build | tail -200
+
+      - name: Package .ipa
+        run: |
+          APP=$(find build/Build/Products/Release-iphoneos -maxdepth 1 -name '*.app' | head -1)
+          test -n "$APP"
+          mkdir -p dist/Payload
+          cp -R "$APP" dist/Payload/
+          VERSION=$(node -p "require('./app.json').expo.version")
+          (cd dist && zip -qry "../Daftari-${VERSION}-${GITHUB_SHA::7}-unsigned.ipa" Payload)
+          ls -lh *.ipa
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Daftari-unsigned-ipa
+          path: '*.ipa'
+          retention-days: 30
