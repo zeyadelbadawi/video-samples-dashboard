@@ -25,7 +25,8 @@ export function Screen({
   scroll = true,
   footer,
 }: {
-  title?: string;
+  /** A string renders as a large title; pass an element (e.g. the logo) for a custom header. */
+  title?: ReactNode;
   right?: ReactNode;
   children: ReactNode;
   scroll?: boolean;
@@ -35,7 +36,7 @@ export function Screen({
   const insets = useSafeAreaInsets();
   const header = title ? (
     <View style={styles.header}>
-      <Text style={[styles.title, { color: t.text }]}>{title}</Text>
+      {typeof title === 'string' ? <Text style={[styles.title, { color: t.text }]}>{title}</Text> : title}
       {right}
     </View>
   ) : null;

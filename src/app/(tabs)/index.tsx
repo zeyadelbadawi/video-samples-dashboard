@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 
+import { BrandLogo } from '@/components/BrandLogo';
 import { TxRow } from '@/components/TxRow';
 import { AddTxButton, Card, Empty, Money, Row, Screen, SectionTitle, T } from '@/components/ui';
 import { ACCOUNT_TYPES } from '@/db/kinds';
@@ -39,13 +40,13 @@ export default function Dashboard() {
     </Pressable>
   );
 
-  if (!data) return <Screen title="دفتري" right={settingsButton}>{null}</Screen>;
+  if (!data) return <Screen title={<BrandLogo width={110} />} right={settingsButton}>{null}</Screen>;
   const { summary, accounts, recent, debtors, creditors, report, month, daysSinceExport } = data;
   const hasData = recent.length > 0;
 
   return (
     <View style={{ flex: 1 }}>
-      <Screen title="دفتري" right={settingsButton}>
+      <Screen title={<BrandLogo width={110} />} right={settingsButton}>
         {hasData && (daysSinceExport === null || daysSinceExport >= BACKUP_WARN_DAYS) ? (
           <Card onPress={() => router.push('/settings')} style={{ borderColor: t.warning }}>
             <T color={t.warning} weight="600">

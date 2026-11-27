@@ -15,6 +15,7 @@ import {
 } from '@/lib/auth';
 import { radius, space, useTheme } from '@/theme';
 
+import { BrandLogo } from './BrandLogo';
 import { Loading } from './ui';
 
 type State = 'loading' | 'setup' | 'confirm' | 'locked' | 'unlocked';
@@ -180,8 +181,8 @@ export function LockGate({ children }: { children: ReactNode }) {
 
   const lockScreen = (
     <View style={[styles.wrap, { backgroundColor: t.background, paddingTop: insets.top + 60, paddingBottom: insets.bottom + 24 }]}>
-      <Text style={{ color: t.text, fontSize: 28, fontWeight: '800' }}>دفتري</Text>
-      <Text style={{ color: t.muted, fontSize: 16, marginTop: space.sm }}>{title}</Text>
+      <BrandLogo width={180} />
+      <Text style={{ color: t.muted, fontSize: 16, marginTop: space.lg }}>{title}</Text>
       <View style={styles.dots}>
         {Array.from({ length: PIN_LENGTH }, (_, i) => (
           <View key={i} style={[styles.dot, { borderColor: t.text, backgroundColor: i < entry.length ? t.text : 'transparent' }]} />
